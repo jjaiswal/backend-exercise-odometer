@@ -1,4 +1,14 @@
-export type ConfidenceLevel = 'high' | 'medium' | 'low';
+export enum ConfidenceLevel {
+  HIGH = 'high',
+  MEDIUM = 'medium',
+  LOW = 'low',
+}
+
+export enum ErrorCode {
+  MISSING_IMAGE = 'MISSING_IMAGE',
+  UNSUPPORTED_FILE_TYPE = 'UNSUPPORTED_FILE_TYPE',
+  UNREADABLE_IMAGE = 'UNREADABLE_IMAGE',
+}
 
 export interface OdometerReading {
   reading: number;
@@ -7,7 +17,7 @@ export interface OdometerReading {
 }
 
 export interface OdometerError {
-  error: string;
+  error: ErrorCode;
   message: string;
 }
 
