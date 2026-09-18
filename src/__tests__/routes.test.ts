@@ -2,6 +2,10 @@ import request from 'supertest';
 import express from 'express';
 import { createApp } from '../app';
 
+// TODO: Mock TesseractOCRProvider to test routes without actual image processing
+// Currently, routes tests use fake image data which fails Tesseract processing
+// Need to inject a mock OCR provider into the app factory for integration testing
+
 describe('POST /odometer/reading', () => {
   let app: express.Application;
 
