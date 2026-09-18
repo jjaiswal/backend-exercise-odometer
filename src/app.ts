@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import multer from 'multer';
 import { OdometerService } from './odometer.service';
 import { TesseractOCRProvider } from './ocr.provider.impl';
+import { OCRProvider } from './ocr.provider';
 import { ErrorCode } from './types';
 import { createErrorResponse } from './utils';
 import { ERROR_STATUS_CODES } from './constants';
@@ -29,9 +30,9 @@ function sendOdometerResponse(res: Response, result: any): Response {
   }
 }
 
-export function createApp(): Express {
+export function createApp(ocrProvider?: OCRProvider): Express {
   const app = express();
-  const odometerService = new OdometerService(new TesseractOCRProvider());
+  const odometerService = new OdometerService(ocrProvider || new TesseractOCRProvider());
 
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ limit: '50mb', extended: true }));

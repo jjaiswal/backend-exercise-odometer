@@ -1,16 +1,33 @@
 import request from 'supertest';
 import express from 'express';
 import { createApp } from '../app';
+import { OCRProvider } from '../ocr.provider';
 
-// TODO: Mock TesseractOCRProvider to test routes without actual image processing
-// Currently, routes tests use fake image data which fails Tesseract processing
-// Need to inject a mock OCR provider into the app factory for integration testing
+class MockOCRProvider implements OCRProvider {
+  async processImage(imageBuffer: Buffer) {
+    if (imageBuffer.length === 0) {
+      throw new Error('Invalid image');
+    }
+
+    const isJPEG = imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8;
+    const isPNG = imageBuffer[0] === 0x89 && imageBuffer[1] === 0x50;
+
+    if (!isJPEG && !isPNG) {
+      throw new Error('Invalid image format');
+    }
+
+    return {
+      text: '12345',
+      confidence: 85
+    };
+  }
+}
 
 describe('POST /odometer/reading', () => {
   let app: express.Application;
 
   beforeEach(() => {
-    app = createApp();
+    app = createApp(new MockOCRProvider());
   });
 
   describe('API Contract - Success Response', () => {
