@@ -27,7 +27,7 @@ describe('OdometerService', () => {
     });
 
     it('should return medium confidence for decent quality image', async () => {
-      mockOcrProvider.setMockResult({ text: '48253', confidence: 75 });
+      mockOcrProvider.setMockResult({ text: '48253', confidence: 72 });
 
       const result = await service.processImage({
         imageBuffer: Buffer.from('fake'),
